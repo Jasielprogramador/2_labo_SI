@@ -90,7 +90,6 @@ public class Tabla extends JFrame implements ActionListener{
 	}
 	
 	private void matrizeaSortu() {
-		GridBagConstraints gbc = new GridBagConstraints();  
 		for(int l=0;l<3;l++) {
 			for(int z=0;z<3;z++) {
 				panelGridLayout.add(getPanelGB(l,z));
@@ -224,6 +223,7 @@ public class Tabla extends JFrame implements ActionListener{
 	private JButton getBtnNewButton() {
 		if (btnNewButton == null) {
 			btnNewButton = new JButton("OK");
+			btnNewButton.addActionListener(this);
 		}
 		return btnNewButton;
 	}
@@ -265,22 +265,89 @@ public class Tabla extends JFrame implements ActionListener{
 		return btnNewButton_1;
 	}
 	
+	//falta estoo de aquin pa abajo
+	private JTextField testuBerriaJarri(String testua) {
+		//if (textField == null) {
+			JTextField textField = new JTextField(testua);
+			textField.setColumns(10);
+		//}
+		return textField;
+	}
+	
+	private JPanel panelGBLortu(String testua, Integer l, Integer z) {
+		JPanel panelGB = new JPanel();
+		GridBagLayout gbl_panelGB = new GridBagLayout();
+		gbl_panelGB.columnWidths = new int[] {0};
+		gbl_panelGB.rowHeights = new int[] {0, 30, 30};
+		gbl_panelGB.columnWeights = new double[]{1.0};
+		gbl_panelGB.rowWeights = new double[]{0.0, 0.0, 0.0};
+		panelGB.setLayout(gbl_panelGB);
+		GridBagConstraints gbc_textField = new GridBagConstraints();
+		gbc_textField.gridheight = 2;
+		gbc_textField.insets = new Insets(0, 0, 5, 0);
+		gbc_textField.fill = GridBagConstraints.BOTH;
+		gbc_textField.gridx = 0;
+		gbc_textField.gridy = 1;
+		panelGB.add(this.testuBerriaJarri(testua), gbc_textField);
+		GridBagConstraints gbc_labelGB = new GridBagConstraints();
+		gbc_labelGB.gridx = 0;
+		gbc_labelGB.gridy = 0;
+		panelGB.add(getLabelGB(l,z), gbc_labelGB);
+		panelGB.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				Font myFont = new Font("SansSerif", Font.PLAIN, 10);
+		        Color myColor = Color.BLUE;
+		        TitledBorder titledBorder = BorderFactory.createTitledBorder(null, 
+		        		"", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, myFont, myColor);
+		        panelGB.setBorder(titledBorder);
+			}});
+		
+		return panelGB;
+	}
+	
+	private void posizioaMatrizean(String testua, Integer a, Integer b) {
+		for(int l=0;l<3;l++) {
+			for(int z=0;z<3;z++) {
+				if(a.equals(l) && b.equals(z)) {
+					panelGridLayout.add(this.panelGBLortu(testua,l, z));
+				}
+				else {
+					panelGridLayout.add(getPanelGB(l,z));
+				}
+			}
+		}
+		
+	}
+	
 	public void actionPerformed(ActionEvent e) { 
         JButton btn = (JButton) e.getSource();
         if(btn.equals(btnNewButton_1)) {
         	System.exit(0);
         }
-        else if(btn.equals(btnNewButton)) {
+        else if(btn.equals(this.btnNewButton)) {
+      
         	if(this.textField_1.getText().equals("") || this.textField_2.getText().equals("")) {
         		JOptionPane.showMessageDialog(null,"Mesedez label eta TField-ean zerbait jar ezazu");
         		this.textField_1.requestFocus();
         	}
         	else {
+ 
         		if(this.textField_2.getText().contains(".") || this.textField_2.getText().contains(",")) {
         			JOptionPane.showMessageDialog(null,"Ez ezazu zenbaki hamartarrak sartu");
             		this.textField_1.requestFocus();
         		}
         		else {
+        			
+        			char a = this.textField_1.getText().charAt(0);
+        			char b = this.textField_1.getText().charAt(1);
+        			
+        			Integer c  = Character.getNumericValue(a);
+        			Integer d  = Character.getNumericValue(b);
+        			
+        			this.posizioaMatrizean(this.textField_1.getText(),c,d);
+        			
+        			
         			this.textField_1.setText("");
         			this.textField_2.setText("");
         		}
