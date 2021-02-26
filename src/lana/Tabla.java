@@ -1,20 +1,23 @@
 package lana;
 
 import java.awt.BorderLayout;
+
 import java.awt.EventQueue;
 import java.awt.GridBagConstraints;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
-
-import org.graalvm.compiler.phases.common.NodeCounterPhase.Stage;
+import javax.swing.border.TitledBorder;
 
 import java.awt.GridLayout;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import java.awt.*;
 import java.awt.event.*;
@@ -118,7 +121,11 @@ public class Tabla extends JFrame implements ActionListener{
 		panelGB.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				
+				Font myFont = new Font("SansSerif", Font.PLAIN, 10);
+		        Color myColor = Color.BLUE;
+		        TitledBorder titledBorder = BorderFactory.createTitledBorder(null, 
+		        		"", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, myFont, myColor);
+		        panelGB.setBorder(titledBorder);
 			}});
 		
 		return panelGB;
@@ -261,9 +268,25 @@ public class Tabla extends JFrame implements ActionListener{
 	public void actionPerformed(ActionEvent e) { 
         JButton btn = (JButton) e.getSource();
         if(btn.equals(btnNewButton_1)) {
-            Stage stage = (Stage) btnIrten.getScene().getWindow();
-            stage.close();
+        	System.exit(0);
         }
+        else if(btn.equals(btnNewButton)) {
+        	if(this.textField_1.getText().equals("") || this.textField_2.getText().equals("")) {
+        		JOptionPane.showMessageDialog(null,"Mesedez label eta TField-ean zerbait jar ezazu");
+        		this.textField_1.requestFocus();
+        	}
+        	else {
+        		if(this.textField_2.getText().contains(".") || this.textField_2.getText().contains(",")) {
+        			JOptionPane.showMessageDialog(null,"Ez ezazu zenbaki hamartarrak sartu");
+            		this.textField_1.requestFocus();
+        		}
+        		else {
+        			this.textField_1.setText("");
+        			this.textField_2.setText("");
+        		}
+        	}
+        }
+        
 	}
 	
 }
