@@ -11,6 +11,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
 import java.awt.GridLayout;
@@ -22,6 +23,7 @@ import javax.swing.JButton;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.FlowLayout;
+
 
 public class Tabla extends JFrame implements ActionListener{
 
@@ -43,6 +45,8 @@ public class Tabla extends JFrame implements ActionListener{
 	private JPanel panel_9;
 	private JPanel panel_10;
 	private JButton btnNewButton_1;
+	
+	private JPanel pressedPanel = new JPanel();
 
 	/**
 	 * Launch the application.
@@ -116,18 +120,52 @@ public class Tabla extends JFrame implements ActionListener{
 		GridBagConstraints gbc_labelGB = new GridBagConstraints();
 		gbc_labelGB.gridx = 0;
 		gbc_labelGB.gridy = 0;
+		panelGB.setBorder(new LineBorder(Color.BLACK));
 		panelGB.add(getLabelGB(lerroa,zutabea), gbc_labelGB);
 		panelGB.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				Font myFont = new Font("SansSerif", Font.PLAIN, 10);
-		        Color myColor = Color.BLUE;
-		        TitledBorder titledBorder = BorderFactory.createTitledBorder(null, 
-		        		"", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, myFont, myColor);
-		        panelGB.setBorder(titledBorder);
+				if(!pressedPanel.equals(null)) {
+					pressedPanel.setBorder(new LineBorder(Color.BLACK));
+				}
+		   
+		        panelGB.setBorder(new LineBorder(Color.BLUE,3));
+		        
+		        pressedPanel = panelGB;
+		        
 			}});
 		
 		return panelGB;
+	}
+	
+	private void labelEtaTFieldJarri(String a, String b) {
+		GridBagConstraints gbc_textField = new GridBagConstraints();
+		gbc_textField.gridheight = 2;
+		gbc_textField.insets = new Insets(0, 0, 5, 0);
+		gbc_textField.fill = GridBagConstraints.BOTH;
+		gbc_textField.gridx = 0;
+		gbc_textField.gridy = 1;
+		pressedPanel.removeAll();
+		pressedPanel.add(getTextFieldBerria(b), gbc_textField);
+		GridBagConstraints gbc_labelGB = new GridBagConstraints();
+		gbc_labelGB.gridx = 0;
+		gbc_labelGB.gridy = 0;
+		pressedPanel.setBorder(new LineBorder(Color.BLACK));
+		pressedPanel.add(getLabelBerria(a), gbc_labelGB);
+	}
+	
+	private JLabel getLabelBerria(String testua) {
+		JLabel labelGB = new JLabel(testua);
+		
+		return labelGB;
+	}
+	
+	private JTextField getTextFieldBerria(String testua) {
+		//if (textField == null) {
+			JTextField textField = new JTextField(testua);
+			textField.setColumns(10);
+		//}
+		return textField;
 	}
 	
 	private JLabel getLabelGB(int lerroa, int zutabea) {
@@ -265,61 +303,7 @@ public class Tabla extends JFrame implements ActionListener{
 		return btnNewButton_1;
 	}
 	
-	//falta estoo de aquin pa abajo
-	private JTextField testuBerriaJarri(String testua) {
-		//if (textField == null) {
-			JTextField textField = new JTextField(testua);
-			textField.setColumns(10);
-		//}
-		return textField;
-	}
-	
-	private JPanel panelGBLortu(String testua, Integer l, Integer z) {
-		JPanel panelGB = new JPanel();
-		GridBagLayout gbl_panelGB = new GridBagLayout();
-		gbl_panelGB.columnWidths = new int[] {0};
-		gbl_panelGB.rowHeights = new int[] {0, 30, 30};
-		gbl_panelGB.columnWeights = new double[]{1.0};
-		gbl_panelGB.rowWeights = new double[]{0.0, 0.0, 0.0};
-		panelGB.setLayout(gbl_panelGB);
-		GridBagConstraints gbc_textField = new GridBagConstraints();
-		gbc_textField.gridheight = 2;
-		gbc_textField.insets = new Insets(0, 0, 5, 0);
-		gbc_textField.fill = GridBagConstraints.BOTH;
-		gbc_textField.gridx = 0;
-		gbc_textField.gridy = 1;
-		panelGB.add(this.testuBerriaJarri(testua), gbc_textField);
-		GridBagConstraints gbc_labelGB = new GridBagConstraints();
-		gbc_labelGB.gridx = 0;
-		gbc_labelGB.gridy = 0;
-		panelGB.add(getLabelGB(l,z), gbc_labelGB);
-		panelGB.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mousePressed(MouseEvent e) {
-				Font myFont = new Font("SansSerif", Font.PLAIN, 10);
-		        Color myColor = Color.BLUE;
-		        TitledBorder titledBorder = BorderFactory.createTitledBorder(null, 
-		        		"", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, myFont, myColor);
-		        panelGB.setBorder(titledBorder);
-			}});
-		
-		return panelGB;
-	}
-	
-	private void posizioaMatrizean(String testua, Integer a, Integer b) {
-		for(int l=0;l<3;l++) {
-			for(int z=0;z<3;z++) {
-				if(a.equals(l) && b.equals(z)) {
-					panelGridLayout.add(this.panelGBLortu(testua,l, z));
-				}
-				else {
-					panelGridLayout.add(getPanelGB(l,z));
-				}
-			}
-		}
-		
-	}
-	
+
 	public void actionPerformed(ActionEvent e) { 
         JButton btn = (JButton) e.getSource();
         if(btn.equals(btnNewButton_1)) {
@@ -339,14 +323,7 @@ public class Tabla extends JFrame implements ActionListener{
         		}
         		else {
         			
-        			char a = this.textField_1.getText().charAt(0);
-        			char b = this.textField_1.getText().charAt(1);
-        			
-        			Integer c  = Character.getNumericValue(a);
-        			Integer d  = Character.getNumericValue(b);
-        			
-        			this.posizioaMatrizean(this.textField_1.getText(),c,d);
-        			
+        			labelEtaTFieldJarri(textField_1.getText(),textField_2.getText());
         			
         			this.textField_1.setText("");
         			this.textField_2.setText("");
